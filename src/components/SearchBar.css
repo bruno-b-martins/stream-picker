@@ -1,0 +1,15 @@
+input.App-search {
+  line-height: 2em;
+  width: 100%;
+  border-top: none;
+  border-right: none;
+  border-bottom: 2px solid white;
+  border-left: none;
+  background-color: transparent;
+  color: white;
+  font-size: inherit;
+}
+
+input.App-search:focus {
+  outline: none;
+}
