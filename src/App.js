@@ -10,61 +10,92 @@ class App extends Component {
         super(props);
 
         this.state = {
-            defaultParams: {
+            getStreamsParams: {
                 params: {
-                    first: 12
+                    first: 2
                 }
             },
             streams: []
         };
+
+        this.getStreams(this.state.getStreamsParams);
     }
 
     getStreams(params) {
-        console.log(1);
-        TwitchAPI.get('/streams', params)
+        const streamsPromise = TwitchAPI.get('/streams', params);
+        const usersPromise = streamsPromise.then((res) => {
+            const userIds = res.data.data.map((stream) => stream.user_id);
+
+            return TwitchAPI.get('/users', { params: {
+                id: userIds
+            }});
+        });
+
+        return Promise.all([streamsPromise, usersPromise])
             .then(this.onGetStreams)
             .catch(this.handleError);
     }
 
-    onGetStreams(res) {
-        console.log(2);
+    onGetStreams = ([streams, users]) => {
         this.setState({
-            streams: res.data.data
+            streams: streams.data.data.map((stream) => {
+                return {
+                    title: stream.title,
+                    type: 'channel',
+                    id: users.data.data
+                        .filter((user) => user.id === stream.user_id)
+                        .map((user) => user.login)[0]
+                };
+            })
         });
-    }
+    };
 
     handleError(err) {
         console.error(err);
     }
 
     handleSearch(text) {
-        console.log(text.target.value);
+        console.log('search', text.target.value);
         TwitchAPI.get('games/top')
             .then(res => console.log(res))
             .catch(err => console.error(err));
     }
 
-    renderStreamThumbnail(i) {
+    renderStreamThumbnail(index, title, type, streamId, width) {
         return (
             <StreamThumbnail
-                title={'stream_thumbnail_' + i}
+                key={'stream_thumbnail_' + index}
+                title={title}
                 src={{
-                    type: 'channel',
-                    id: 'rocketleague',
+                    type: type,
+                    id: streamId,
                     options: {
                         autoplay: false,
                         mute: true
                     }
                 }}
-                width={400}
+                width={width}
                 allowFullScreen={false}
             />
         );
     }
 
     render() {
-        this.getStreams(this.state.defaultParams);
-        console.log('yolo', this.state.streams);
+        const container = document.getElementsByClassName('App-stream-thumbnails-container').item(0);
+        let width = 0;
+        if (container) {
+            if (this.state.streams.length >= 3) {
+                width = 0.3 * container.offsetWidth;
+            } else if (this.state.streams.length === 2) {
+                width = 0.45 * container.offsetWidth;
+            } else {
+                width = container.offsetWidth;
+            }
+        }
+
+        const streams = this.state.streams.map((stream, index) => {
+            return this.renderStreamThumbnail(index, stream.title, stream.type, stream.id, width);
+        });
 
         return (
             <div className="App">
@@ -75,7 +106,7 @@ class App extends Component {
                 </header>
                 <div className="App-body">
                     <div className="App-stream-thumbnails-container">
-                        {this.renderStreamThumbnail(0)}
+                        {streams}
                     </div>
                 </div>
             </div>

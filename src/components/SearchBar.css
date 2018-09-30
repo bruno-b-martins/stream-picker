@@ -4,7 +4,7 @@ div.SearchBar-container {
   align-items: center; }
 
 input.SearchBar-input {
-  line-height: 2em;
+  line-height: calc(2em - 4px);
   flex: 1;
   margin-right: 0.5em;
   border-top: none;

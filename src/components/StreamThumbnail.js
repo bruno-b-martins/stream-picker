@@ -13,7 +13,6 @@ function StreamThumbnail(props) {
         <iframe
             title={props.title}
             src={src}
-            // src="https://player.twitch.tv/?video=v316735350&autoplay=true"
             height={height}
             width={props.width}
             frameBorder="0"
