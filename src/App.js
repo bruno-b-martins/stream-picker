@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './assets/FontAwesome.js';
 import './App.css';
 import TwitchAPI from './services/TwitchAPI';
 import SearchBar from "./components/SearchBar";
