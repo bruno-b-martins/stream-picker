@@ -1,6 +1,14 @@
-div.SearchBar-container {
-  display: flex;
-  flex-direction: row; }
+.App {
+  text-align: center;
+  font-size: large;
+}
+
+.App-header {
+  background-color: #222;
+  height: 2em;
+  padding: 3rem 6rem;
+  color: white;
+}
 
 input.App-search {
   line-height: 2em;
@@ -11,7 +19,13 @@ input.App-search {
   border-left: none;
   background-color: transparent;
   color: white;
-  font-size: inherit; }
+  font-size: inherit;
+}
 
 input.App-search:focus {
-  outline: none; }
+  outline: none;
+}
+
+.App-body {
+  padding: 0 6rem;
+}

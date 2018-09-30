@@ -1,6 +1,7 @@
 div.SearchBar-container {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+}
 
 input.App-search {
   line-height: 2em;
@@ -11,7 +12,9 @@ input.App-search {
   border-left: none;
   background-color: transparent;
   color: white;
-  font-size: inherit; }
+  font-size: inherit;
+}
 
 input.App-search:focus {
-  outline: none; }
+  outline: none;
+}
