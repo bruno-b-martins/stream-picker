@@ -1,10 +1,12 @@
 div.SearchBar-container {
   display: flex;
-  flex-direction: row; }
+  flex-direction: row;
+  align-items: center; }
 
-input.App-search {
+input.SearchBar-input {
   line-height: 2em;
-  width: 100%;
+  flex: 1;
+  margin-right: 0.5em;
   border-top: none;
   border-right: none;
   border-bottom: 2px solid white;
@@ -13,5 +15,5 @@ input.App-search {
   color: white;
   font-size: inherit; }
 
-input.App-search:focus {
+input.SearchBar-input:focus {
   outline: none; }
