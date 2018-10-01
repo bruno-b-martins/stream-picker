@@ -1,24 +1,20 @@
 import React  from 'react';
-import './SearchBar.css';
+import Link from "react-router-dom/es/Link";
+import './StreamThumbnail.css';
 
 function StreamThumbnail(props) {
-    let src = "https://player.twitch.tv/?" + props.src.type + "=" + props.src.id;
-    for (let option in props.src.options) {
-        src += "&" + option + "=" + props.src.options[option];
-    }
-
-    const height = 0.5625 * props.width;
-
     return (
-        <iframe
-            title={props.title}
-            src={src}
-            height={height}
-            width={props.width}
-            frameBorder="0"
-            scrolling="no"
-            allowFullScreen={props.allowFullScreen}>
-        </iframe>
+        <Link to={{
+            pathname: "/stream/" + props.stream.userId,
+            state: { stream: props.stream }
+        }}>
+            <div>
+                <img
+                    src={props.stream.thumbnailUrl.replace("{width}", props.width.toFixed(0)).replace("{height}", (0.5625 * props.width).toFixed(0))}
+                    alt={props.stream.title}
+                />
+            </div>
+        </Link>
     );
 }
 

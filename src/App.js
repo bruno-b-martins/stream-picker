@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import './assets/FontAwesome.js';
 import './App.css';
 import TwitchAPI from './services/TwitchAPI';
 import SearchBar from './components/SearchBar';
 import StreamThumbnail from './components/StreamThumbnail';
+import StreamPlayer from './components/StreamPlayer';
 
 class App extends Component {
     constructor(props) {
@@ -21,39 +23,33 @@ class App extends Component {
         this.getStreams(this.state.getStreamsParams);
     }
 
+    handleError(err) {
+        console.error(err);
+    }
+
     getStreams(params) {
-        const streamsPromise = TwitchAPI.get('/streams', params);
-        const usersPromise = streamsPromise.then((res) => {
-            const userIds = res.data.data.map((stream) => stream.user_id);
-
-            return TwitchAPI.get('/users', { params: {
-                id: userIds
-            }});
-        });
-
-        return Promise.all([streamsPromise, usersPromise])
+        TwitchAPI.get('/streams', params)
             .then(this.onGetStreams)
             .catch(this.handleError);
     }
 
-    onGetStreams = ([streams, users]) => {
+    onGetStreams = (streams) => {
         this.setState({
             streams: streams.data.data.map((stream) => {
                 return {
+                    thumbnailUrl: stream.thumbnail_url,
                     title: stream.title,
-                    type: 'channel',
-                    id: users.data.data
-                        .filter((user) => user.id === stream.user_id)
-                        .map((user) => user.login)[0]
+                    gameId: stream.game_id,
+                    viewers: stream.viewer_count,
+                    startedAt: stream.started_at,
+                    language: stream.language,
+                    userId: stream.user_id
                 };
             })
         });
     };
 
-    handleError(err) {
-        console.error(err);
-    }
-
+    // TODO - WIP
     handleSearch(text) {
         console.log('search', text.target.value);
         TwitchAPI.get('games/top')
@@ -61,9 +57,26 @@ class App extends Component {
             .catch(err => console.error(err));
     }
 
-    renderStreamThumbnail(index, title, type, streamId, width) {
+    onPickStream(stream) {
+        return TwitchAPI.get('/users', { params: {
+            id: stream.userId
+        }}).then();
+    }
+
+    renderStreamThumbnail(index, stream, width) {
         return (
             <StreamThumbnail
+                key={'stream_thumbnail_' + index}
+                stream={stream}
+                width={width}
+                onClick={() => this.onPickStream(stream)}
+            />
+        );
+    }
+
+    renderStreamPlayer(index, title, type, streamId, width) {
+        return (
+            <StreamPlayer
                 key={'stream_thumbnail_' + index}
                 title={title}
                 src={{
@@ -94,7 +107,7 @@ class App extends Component {
         }
 
         const streams = this.state.streams.map((stream, index) => {
-            return this.renderStreamThumbnail(index, stream.title, stream.type, stream.id, width);
+            return this.renderStreamThumbnail(index, stream, width);
         });
 
         return (
@@ -105,9 +118,15 @@ class App extends Component {
                     />
                 </header>
                 <div className="App-body">
-                    <div className="App-stream-thumbnails-container">
-                        {streams}
-                    </div>
+                    <Router>
+                        <div className="App-stream-thumbnails-container">
+                            {streams}
+                            <Route
+                                path="/stream/:userId"
+                                component={StreamPlayer}
+                            />
+                        </div>
+                    </Router>
                 </div>
             </div>
         );
