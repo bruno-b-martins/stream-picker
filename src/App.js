@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './assets/FontAwesome.js';
 import './App.css';
 import TwitchAPI from './services/TwitchAPI';
@@ -35,6 +37,8 @@ class App extends Component {
         };
 
         this.getStreams(this.state.getStreamsParams);
+
+        setTimeout(() => this.handleError('yolo'), 2000);
     }
 
     /**
@@ -54,8 +58,13 @@ class App extends Component {
         return initialValues;
     }
 
-    // TODO - Proper error handling (flash/toast messages)
+    /**
+     * Shows an toast error message to the user
+     *
+     * @param err
+     */
     handleError(err) {
+        toast.error("Ups! Something went wrong");
         console.error(err);
     }
 
@@ -162,18 +171,32 @@ class App extends Component {
                     </header>
                     <div className='App-body'>
                         <div id='App-router-container'>
-                            <Route
-                                exact path='/'
-                                render={() => <StreamThumbnailsContainer
-                                    streams={this.state.streams}
-                                />}
-                            />
-                            <Route
-                                path='/:userId'
-                                component={StreamPlayer}
-                                onError={this.handleError}
-                            />
+                            <Switch>
+                                <Route
+                                    exact path='/'
+                                    render={() => <StreamThumbnailsContainer
+                                        streams={this.state.streams}
+                                    />}
+                                />
+                                <Route
+                                    path='/:userId'
+                                    component={StreamPlayer}
+                                    onError={this.handleError}
+                                />
+                            </Switch>
                         </div>
+
+                        <ToastContainer
+                            position={toast.POSITION.BOTTOM_CENTER}
+                            autoClose={5000}
+                            hideProgressBar={true}
+                            newestOnTop={false}
+                            closeOnClick
+                            rtl={false}
+                            pauseOnVisibilityChange
+                            draggable
+                            pauseOnHover
+                        />
                     </div>
                 </div>
             </Router>
