@@ -37,8 +37,6 @@ class App extends Component {
         };
 
         this.getStreams(this.state.getStreamsParams);
-
-        setTimeout(() => this.handleError('yolo'), 2000);
     }
 
     /**
