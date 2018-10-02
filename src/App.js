@@ -51,12 +51,24 @@ class App extends Component {
     };
 
     // TODO - WIP
-    handleSearch(text) {
-        console.log('search', text.target.value);
-        TwitchAPI.get('games/top')
-            .then(res => console.log(res))
-            .catch(err => console.error(err));
-    }
+    handleSearch = (text) => {
+        let newState = {
+            getStreamsParams: {
+                params: {
+                    first: this.state.getStreamsParams.params.first
+                }
+            },
+            streams: []
+        };
+
+        if (text.target.value.length > 0) {
+            newState.getStreamsParams.params['user_login'] = text.target.value;
+        }
+
+        this.setState(newState);
+
+        this.getStreams(newState.getStreamsParams);
+    };
 
     render() {
         return (
