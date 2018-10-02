@@ -82,7 +82,9 @@ class App extends Component {
                     thumbnailUrl: stream.thumbnail_url,
                     title: stream.title,
                     gameId: stream.game_id,
-                    viewers: stream.viewer_count,
+                    viewersCount: {
+                        value: stream.viewer_count
+                    },
                     startedAt: stream.started_at,
                     language: stream.language,
                     userId: stream.user_id
