@@ -6,11 +6,16 @@ class SearchOptions extends Component {
     render() {
         return (
             <div className='SearchOptions-container'>
-                <Select
-                    value={this.props.options.numberOfResults.value}
-                    onChange={this.props.options.numberOfResults.handler}
-                    options={this.props.options.numberOfResults.options}
-                />
+                <div className='SearchOptions-search-types-container'></div>
+                <div className='SearchOptions-number-of-results-container'>
+                    <div className='SearchOptions-number-of-results-label'># results:</div>
+                    <Select
+                        className='SearchOptions-number-of-results-select'
+                        value={this.props.options.numberOfResults.value}
+                        onChange={this.props.options.numberOfResults.handler}
+                        options={this.props.options.numberOfResults.options}
+                    />
+                </div>
             </div>
         );
     }

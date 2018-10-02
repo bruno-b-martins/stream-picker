@@ -150,17 +150,17 @@ class App extends Component {
 
     render() {
         return (
-            <div className='App'>
-                <header className='App-header'>
-                    <SearchBar
-                        onChange={this.handleSearch}
-                    />
-                    <SearchOptions
-                        options={this.state.searchOptions}
-                    />
-                </header>
-                <div className='App-body'>
-                    <Router>
+            <Router>
+                <div className='App'>
+                    <header className='App-header'>
+                        <SearchBar
+                            onChange={this.handleSearch}
+                        />
+                        <SearchOptions
+                            options={this.state.searchOptions}
+                        />
+                    </header>
+                    <div className='App-body'>
                         <div id='App-router-container'>
                             <Route
                                 exact path='/'
@@ -174,9 +174,9 @@ class App extends Component {
                                 onError={this.handleError}
                             />
                         </div>
-                    </Router>
+                    </div>
                 </div>
-            </div>
+            </Router>
         );
     }
 

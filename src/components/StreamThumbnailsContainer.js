@@ -14,6 +14,7 @@ class StreamThumbnailsContainer extends Component {
     }
 
     render() {
+        console.log('render', this.props.streams);
         const container = document.getElementsByClassName('StreamThumbnailsContainer').item(0);
         let width = 0;
         if (container) {

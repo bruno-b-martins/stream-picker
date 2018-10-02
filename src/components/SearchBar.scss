@@ -1,13 +1,18 @@
-div.SearchBar-container {
+.SearchBar-container {
   display: flex;
   flex-direction: row;
   align-items: center;
+  margin-bottom: 1em;
+
+  a {
+    color: white;
+  }
 }
 
-input.SearchBar-input {
+.SearchBar-input {
   line-height: calc(2em - 4px);
   flex: 1;
-  margin-right: 0.5em;
+  margin: 0 1em;
   border-top: none;
   border-right: none;
   border-bottom: 2px solid white;
@@ -17,6 +22,6 @@ input.SearchBar-input {
   font-size: inherit;
 }
 
-input.SearchBar-input:focus {
+.SearchBar-input:focus {
   outline: none;
 }

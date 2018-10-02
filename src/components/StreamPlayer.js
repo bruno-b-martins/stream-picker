@@ -6,6 +6,8 @@ class StreamPlayer extends Component {
     constructor(props) {
         super(props);
 
+        this.timeoutHandler = null;
+
         this.state = {
             userId: props.match.params.userId,
             stream: props.location.state.stream,
@@ -74,7 +76,7 @@ class StreamPlayer extends Component {
             }
         });
 
-        setTimeout(this.getViewersCount, 10000);    //TODO - set a timeout handler?
+        this.timeoutHandler = setTimeout(this.getViewersCount, 10000);    //TODO - set a timeout handler?
     };
 
     render () {
@@ -93,6 +95,10 @@ class StreamPlayer extends Component {
                 {this.state.stream.viewersCount.value}
             </div>
         );
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timeoutHandler);
     }
 }
 
