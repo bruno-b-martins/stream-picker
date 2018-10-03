@@ -3,21 +3,18 @@ import './StreamThumbnailsContainer.css';
 import StreamThumbnail from './StreamThumbnail';
 
 class StreamThumbnailsContainer extends Component {
-    thumbnailWidth = 300;
-
-    renderStreamThumbnail(index, stream, width) {
+    renderStreamThumbnail(index, stream) {
         return (
             <StreamThumbnail
                 key={'stream_thumbnail_' + index}
                 stream={stream}
-                width={width}
             />
         );
     }
 
     render() {
         const thumbnails = this.props.streams.map((stream, index) => {
-            return this.renderStreamThumbnail(index, stream, this.thumbnailWidth);
+            return this.renderStreamThumbnail(index, stream);
         });
 
         return (

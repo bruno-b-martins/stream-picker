@@ -27,9 +27,9 @@ class App extends Component {
                 numberOfResults: {
                     value: { value: initialValues.numberOfResults, label: initialValues.numberOfResults },
                     options: [
-                        { value: 4, label: 4 },
-                        { value: 8, label: 8 },
-                        { value: 12, label: 12 }
+                        { value: 6, label: 6 },
+                        { value: 12, label: 12 },
+                        { value: 18, label: 18 }
                     ],
                     handler: this.handleNumberOfResultsChange
                 }
@@ -47,7 +47,7 @@ class App extends Component {
      */
     loadInitialValues() {
         let initialValues = {
-            numberOfResults: 4
+            numberOfResults: 6
         };
 
         if (Number(localStorage.getItem('numberOfResultsValue'))) {
@@ -68,34 +68,54 @@ class App extends Component {
     }
 
     /**
-     * Gets streams and pass them to their handler
+     * Gets streams and their respective users and games and pass them to their handler
      *
      * @param params
      */
     getStreams(params) {
-        TwitchAPI.get('/streams', params)
+        console.log('getStreams');
+        const streamsPromise = TwitchAPI.get('/streams', params);
+
+        const usersPromise = streamsPromise.then((res) => {
+            const usersIds = res.data.data.map((stream) => stream.user_id);
+
+            return TwitchAPI.get('/users', { params: {
+                id: usersIds
+            }});
+        });
+
+        const gamesPromise = streamsPromise.then((res) => {
+            const gamesIds = res.data.data.map((stream) => stream.game_id);
+
+            return TwitchAPI.get('/games', { params: {
+                id: gamesIds
+            }});
+        });
+
+        return Promise.all([streamsPromise, usersPromise, gamesPromise])
             .then(this.onGetStreams)
             .catch(this.handleError);
     }
 
     /**
-     * Updates this.state with the incoming stream results
+     * Updates this.state with the incoming stream, users and games results
      *
      * @param streams
      */
-    onGetStreams = (streams) => {
+    onGetStreams = ([streams, users, games]) => {
+        console.log('onGetStreams');
         this.setState({
             streams: streams.data.data.map((stream) => {
                 return {
                     thumbnailUrl: stream.thumbnail_url,
                     title: stream.title,
-                    gameId: stream.game_id,
+                    user: users.data.data.filter((user) => user.id === stream.user_id),
+                    game: games.data.data.filter((game) => game.id === stream.game_id),
                     viewersCount: {
                         value: stream.viewer_count
                     },
                     startedAt: stream.started_at,
-                    language: stream.language,
-                    userId: stream.user_id
+                    language: stream.language
                 };
             })
         });
