@@ -1,11 +1,11 @@
 import React  from 'react';
 import Link from 'react-router-dom/es/Link';
-import './StreamThumbnailVertical.css';
+import './VerticalStreamThumbnail.css';
 import StreamThumbnailDetails from "./StreamThumbnailDetails";
 
-function StreamThumbnailVertical(props) {
+function VerticalStreamThumbnail(props) {
     return (
-        <div className='StreamThumbnailVertical-container'>
+        <div className='VerticalStreamThumbnail-container'>
             <Link to={{
                 pathname: '/' + (props.stream.user.length > 0 ? props.stream.user[0].id : ''),
                 state: { stream: props.stream }
@@ -28,4 +28,4 @@ function StreamThumbnailVertical(props) {
     );
 }
 
-export default StreamThumbnailVertical;
+export default VerticalStreamThumbnail;

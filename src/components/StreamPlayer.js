@@ -84,7 +84,6 @@ class StreamPlayer extends Component {
     };
 
     render () {
-        console.log(this.state);
         return (
             <div className='StreamPlayer-container'>
                 <div className='StreamPlayer-title'>{this.state.stream.title}</div>

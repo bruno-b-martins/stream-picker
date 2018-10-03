@@ -1,9 +1,9 @@
-.StreamThumbnailsContainer-title {
+.VerticalStreamThumbnailsContainer-title {
   padding: 1em 0 0 1em;
   font-weight: bolder;
   text-transform: uppercase; }
 
-.StreamThumbnailsContainer-container {
+.VerticalStreamThumbnailsContainer-container {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap; }

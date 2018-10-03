@@ -7,7 +7,7 @@ import './App.css';
 import TwitchAPI from './services/TwitchAPI';
 import SearchBar from './components/SearchBar';
 import SearchOptions from './components/SearchOptions';
-import StreamThumbnailsContainer from './components/StreamThumbnailsContainer';
+import VerticalStreamThumbnailsContainer from './components/VerticalStreamThumbnailsContainer';
 import StreamPlayer from './components/StreamPlayer';
 
 class App extends Component {
@@ -220,7 +220,7 @@ class App extends Component {
                             <Switch>
                                 <Route
                                     exact path='/'
-                                    render={() => <StreamThumbnailsContainer
+                                    render={() => <VerticalStreamThumbnailsContainer
                                         streams={this.state.streams}
                                         bodyTitle={this.state.bodyTitle.value}
                                     />}
