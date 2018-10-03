@@ -1,5 +1,6 @@
-import React, { Component }  from 'react';
+import React, { Component } from 'react';
 import TwitchAPI from '../services/TwitchAPI';
+import { StreamsProvider } from '../services/StreamsProvider';
 import StreamThumbnailDetails from "./StreamThumbnailDetails";
 import './StreamPlayer.css';
 
@@ -17,10 +18,15 @@ class StreamPlayer extends Component {
             player: {},
             viewersCount: {
                 value: null
-            }
+            },
+            gameStreams: []
         };
 
         this.getStream(props.match.params.userId);
+        this.getGameStreams({ params: {
+            game_id: props.location.state.stream.game[0].id,
+            first: 10
+        }});
     }
 
     /**
@@ -83,8 +89,20 @@ class StreamPlayer extends Component {
         this.timeoutHandler = setTimeout(this.getViewersCount, 10000);
     };
 
+    getGameStreams = (params) => {
+        StreamsProvider.getEnrichedStreams(params)
+            .then(this.onGetGameStreams)
+            .catch(this.props.onError);
+    };
+
+    onGetGameStreams = (streams) => {
+        this.setState({
+            gameStreams: streams
+        });
+    };
+
     /**
-     * On resize update the player's size
+     * On resize update the stream player's size
      */
     onResize = () => {
         const containerWidth = document.getElementById('App-router-container').offsetWidth;

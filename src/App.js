@@ -4,7 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './assets/FontAwesome.js';
 import './App.css';
-import TwitchAPI from './services/TwitchAPI';
+import { StreamsProvider } from './services/StreamsProvider';
 import SearchBar from './components/SearchBar';
 import SearchOptions from './components/SearchOptions';
 import VerticalStreamThumbnailsContainer from './components/VerticalStreamThumbnailsContainer';
@@ -71,7 +71,7 @@ class App extends Component {
      *
      * @param err
      */
-    handleError(err) {
+    static handleError(err) {
         toast.error("Ups! Something went wrong");
         console.error(err);
     }
@@ -82,51 +82,19 @@ class App extends Component {
      * @param params
      */
     getStreams(params) {
-        const streamsPromise = TwitchAPI.get('/streams', params);
-
-        const usersPromise = streamsPromise.then((res) => {
-            const usersIds = res.data.data.map((stream) => stream.user_id);
-
-            return TwitchAPI.get('/users', { params: {
-                id: usersIds
-            }});
-        });
-
-        const gamesPromise = streamsPromise.then((res) => {
-            const gamesIds = res.data.data.map((stream) => stream.game_id);
-
-            return TwitchAPI.get('/games', { params: {
-                id: gamesIds
-            }});
-        });
-
-        return Promise.all([streamsPromise, usersPromise, gamesPromise])
+        StreamsProvider.getEnrichedStreams(params)
             .then(this.onGetStreams)
-            .catch(this.handleError);
+            .catch(App.handleError);
     }
 
     /**
      * Updates this.state with the incoming stream, users and games results
      *
      * @param streams
-     * @param users
-     * @param games
      */
-    onGetStreams = ([streams, users, games]) => {
+    onGetStreams = (streams) => {
         this.setState({
-            streams: streams.data.data.map((stream) => {
-                return {
-                    thumbnailUrl: stream.thumbnail_url,
-                    title: stream.title,
-                    user: users.data.data.filter((user) => user.id === stream.user_id),
-                    game: games.data.data.filter((game) => game.id === stream.game_id),
-                    viewersCount: {
-                        value: stream.viewer_count
-                    },
-                    startedAt: stream.started_at,
-                    language: stream.language
-                };
-            }),
+            streams: streams,
             bodyTitle: {
                 value: (this.searchText !== null && this.searchText.length > 0) ? 'Results' : 'Popular'
             }
@@ -145,7 +113,7 @@ class App extends Component {
 
         if (window.location.pathname === '/') {
             clearTimeout(this.handleSearchTimeoutHandler);
-            this.handleSearchTimeoutHandler = setTimeout(this.delayedSearch.bind(this), 2000);
+            this.handleSearchTimeoutHandler = setTimeout(this.delayedSearch.bind(this), 1000);
         }
     };
 
@@ -228,7 +196,7 @@ class App extends Component {
                                 <Route
                                     path='/:userId'
                                     component={StreamPlayer}
-                                    onError={this.handleError}
+                                    onError={App.handleError}
                                 />
                             </Switch>
                         </div>
