@@ -14,7 +14,7 @@ class App extends Component {
     constructor(props) {
         super(props);
 
-        let initialValues = this.loadInitialValues();
+        let initialValues = App.loadInitialValues();
 
         this.state = {
             getStreamsParams: {
@@ -54,7 +54,7 @@ class App extends Component {
      *
      * @returns {{numberOfResults: number}}
      */
-    loadInitialValues() {
+    static loadInitialValues() {
         let initialValues = {
             numberOfResults: 6
         };

@@ -27,5 +27,14 @@
     "eject": "react-scripts eject",
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --recursive"
+  },
+  "devDependencies": {
+    "jest": "^23.6.0"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!node_modules/**/*"
+    ]
   }
 }
