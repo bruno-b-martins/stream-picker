@@ -19,16 +19,17 @@ class App extends Component {
         this.state = {
             getStreamsParams: {
                 params: {
-                    first: initialValues.numberOfResults
+                    first: initialValues.numberOfResults,
+                    user_login: null
                 }
             },
             searchOptions: {
                 numberOfResults: {
                     value: { value: initialValues.numberOfResults, label: initialValues.numberOfResults },
                     options: [
-                        { value: 3, label: 3 },
-                        { value: 6, label: 6 },
-                        { value: 9, label: 9 }
+                        { value: 4, label: 4 },
+                        { value: 8, label: 8 },
+                        { value: 12, label: 12 }
                     ],
                     handler: this.handleNumberOfResultsChange
                 }
@@ -46,7 +47,7 @@ class App extends Component {
      */
     loadInitialValues() {
         let initialValues = {
-            numberOfResults: 3
+            numberOfResults: 4
         };
 
         if (Number(localStorage.getItem('numberOfResultsValue'))) {
@@ -101,11 +102,31 @@ class App extends Component {
     };
 
     /**
-     * Updates this.state.getStreamParams with the incoming text and calls the this.getStreams method to get them
+     * Class variables to optimize the user experience and reduce the server load
+     */
+    handleSearchTimeoutHandler = null;
+    searchText = null;
+
+    /**
+     * Clears this.handleSearchTimeoutHandler so the request isn't sent anymore.
+     * Updates this.searchText with the new incoming text.
+     * Launches a new timeout to get the streams matching this.searchText
      *
      * @param text
      */
     handleSearch = (text) => {
+        this.searchText = text.target.value;
+
+        if (window.location.pathname === '/') {
+            clearTimeout(this.handleSearchTimeoutHandler);
+            this.handleSearchTimeoutHandler = setTimeout(this.delayedSearch.bind(this), 2000);
+        }
+    };
+
+    /**
+     * Updates this.state.getStreamParams with this.searchText and calls this.getStreams to retrieve them
+     */
+    delayedSearch = () => {
         let newState = {
             getStreamsParams: {
                 params: {
@@ -114,8 +135,8 @@ class App extends Component {
             }
         };
 
-        if (text.target.value.length > 0) {
-            newState.getStreamsParams.params['user_login'] = text.target.value;
+        if (this.searchText.length > 0) {
+            newState.getStreamsParams.params['user_login'] = this.searchText;
         }
 
         this.setState(newState);
@@ -162,6 +183,7 @@ class App extends Component {
                     <header className='App-header'>
                         <SearchBar
                             onChange={this.handleSearch}
+                            onSearch={() => this.getStreams(this.state.getStreamsParams)}
                         />
                         <SearchOptions
                             options={this.state.searchOptions}
