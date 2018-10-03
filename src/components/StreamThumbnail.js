@@ -21,16 +21,16 @@ function StreamThumbnail(props) {
             <div className='StreamThumbnail-details'>
                 <div className='StreamThumbnail-detail'>
                     <div>
-                        <FontAwesomeIcon icon="user"/> {props.stream.user[0].display_name || 'NaN'}
+                        <FontAwesomeIcon icon="user"/> {props.stream.user.length > 0 ? props.stream.user[0].display_name : 'NA'}
                     </div>
                     <div>
-                        <FontAwesomeIcon icon="gamepad"/> {props.stream.game[0].name || 'NaN'}
+                        <FontAwesomeIcon icon="gamepad"/> {props.stream.game.length > 0 ? props.stream.game[0].name : 'NA'}
                     </div>
                 </div>
 
                 <div className='StreamThumbnail-detail'>
                     <div>
-                        <FontAwesomeIcon icon='eye'/> {props.stream.viewersCount.value || 'NaN'}
+                        <FontAwesomeIcon icon='eye'/> {props.stream.viewersCount.value || 'NA'}
                     </div>
                     <Moment fromNow>{props.stream.startedAt}</Moment>
                 </div>
