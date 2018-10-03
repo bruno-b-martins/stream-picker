@@ -73,7 +73,6 @@ class App extends Component {
      * @param params
      */
     getStreams(params) {
-        console.log('getStreams');
         const streamsPromise = TwitchAPI.get('/streams', params);
 
         const usersPromise = streamsPromise.then((res) => {
@@ -101,9 +100,10 @@ class App extends Component {
      * Updates this.state with the incoming stream, users and games results
      *
      * @param streams
+     * @param users
+     * @param games
      */
     onGetStreams = ([streams, users, games]) => {
-        console.log('onGetStreams');
         this.setState({
             streams: streams.data.data.map((stream) => {
                 return {
@@ -242,7 +242,6 @@ class App extends Component {
             </Router>
         );
     }
-
 }
 
 export default App;
