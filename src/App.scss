@@ -1,14 +1,20 @@
+html, body, .App {
+  height: 100%;
+}
+
 .App {
-  text-align: center;
   font-size: large;
+  background-color: #DDDDDD;
 }
 
 .App-header {
-  background-color: #222;
   padding: 1rem 6rem;
+  background-color: #222222;
   color: white;
 }
 
 .App-body {
   padding: 0 6rem;
+  height: calc(100vh - 124px);
+  overflow: auto;
 }

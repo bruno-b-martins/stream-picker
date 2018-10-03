@@ -20,10 +20,10 @@ function StreamThumbnail(props) {
 
             <div className='StreamThumbnail-details'>
                 <div className='StreamThumbnail-detail'>
-                    <div>
+                    <div className="StreamThumbnail-detail-item">
                         <FontAwesomeIcon icon="user"/> {props.stream.user.length > 0 ? props.stream.user[0].display_name : 'NA'}
                     </div>
-                    <div>
+                    <div className="StreamThumbnail-detail-item">
                         <FontAwesomeIcon icon="gamepad"/> {props.stream.game.length > 0 ? props.stream.game[0].name : 'NA'}
                     </div>
                 </div>

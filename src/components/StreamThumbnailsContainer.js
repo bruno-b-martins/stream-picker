@@ -18,8 +18,13 @@ class StreamThumbnailsContainer extends Component {
         });
 
         return (
-            <div className='StreamThumbnailsContainer'>
-                {thumbnails}
+            <div>
+                <div className='StreamThumbnailsContainer-title'>
+                    {this.props.bodyTitle}
+                </div>
+                <div className='StreamThumbnailsContainer-container'>
+                    {thumbnails}
+                </div>
             </div>
         );
     }

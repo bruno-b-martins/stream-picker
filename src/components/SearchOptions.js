@@ -8,7 +8,7 @@ class SearchOptions extends Component {
             <div className='SearchOptions-container'>
                 <div className='SearchOptions-search-types-container'></div>
                 <div className='SearchOptions-number-of-results-container'>
-                    <div className='SearchOptions-number-of-results-label'># results:</div>
+                    <div className='SearchOptions-number-of-results-label'># Results:</div>
                     <Select
                         className='SearchOptions-number-of-results-select'
                         value={this.props.options.numberOfResults.value}

@@ -34,11 +34,20 @@ class App extends Component {
                     handler: this.handleNumberOfResultsChange
                 }
             },
+            bodyTitle: {
+                value: 'Popular'
+            },
             streams: []
         };
 
         this.getStreams(this.state.getStreamsParams);
     }
+
+    /**
+     * Class variables to optimize the user experience and reduce the server load
+     */
+    handleSearchTimeoutHandler = null;
+    searchText = null;
 
     /**
      * Returns the initial values loaded from localStorage or their default values
@@ -117,15 +126,12 @@ class App extends Component {
                     startedAt: stream.started_at,
                     language: stream.language
                 };
-            })
+            }),
+            bodyTitle: {
+                value: (this.searchText !== null && this.searchText.length > 0) ? 'Results' : 'Popular'
+            }
         });
     };
-
-    /**
-     * Class variables to optimize the user experience and reduce the server load
-     */
-    handleSearchTimeoutHandler = null;
-    searchText = null;
 
     /**
      * Clears this.handleSearchTimeoutHandler so the request isn't sent anymore.
@@ -216,6 +222,7 @@ class App extends Component {
                                     exact path='/'
                                     render={() => <StreamThumbnailsContainer
                                         streams={this.state.streams}
+                                        bodyTitle={this.state.bodyTitle.value}
                                     />}
                                 />
                                 <Route
