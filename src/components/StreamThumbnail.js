@@ -5,7 +5,6 @@ import Moment from 'react-moment';
 import './StreamThumbnail.css';
 
 function StreamThumbnail(props) {
-    console.log(props);
     return (
         <div className='StreamThumbnail-container'>
             <Link to={{
@@ -18,18 +17,20 @@ function StreamThumbnail(props) {
                 />
             </Link>
             <div className='StreamThumbnail-title'>{props.stream.title}</div>
+
             <div className='StreamThumbnail-details'>
-                <div className='StreamThumbnail-viewers-count-started-at'>
-                <div>
-                    <FontAwesomeIcon icon="user"/> {props.stream.user[0].display_name}
-                </div>
-                <div>
-                    <FontAwesomeIcon icon="gamepad"/> {props.stream.game[0].name}
-                </div>
-                </div>
-                <div className='StreamThumbnail-viewers-count-started-at'>
+                <div className='StreamThumbnail-detail'>
                     <div>
-                        <FontAwesomeIcon icon='eye'/> {props.stream.viewersCount.value}
+                        <FontAwesomeIcon icon="user"/> {props.stream.user[0].display_name || 'NaN'}
+                    </div>
+                    <div>
+                        <FontAwesomeIcon icon="gamepad"/> {props.stream.game[0].name || 'NaN'}
+                    </div>
+                </div>
+
+                <div className='StreamThumbnail-detail'>
+                    <div>
+                        <FontAwesomeIcon icon='eye'/> {props.stream.viewersCount.value || 'NaN'}
                     </div>
                     <Moment fromNow>{props.stream.startedAt}</Moment>
                 </div>
