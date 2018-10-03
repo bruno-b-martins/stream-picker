@@ -1,5 +1,6 @@
 import React, { Component }  from 'react';
 import TwitchAPI from '../services/TwitchAPI';
+import StreamThumbnailDetails from "./StreamThumbnailDetails";
 import './StreamPlayer.css';
 
 class StreamPlayer extends Component {
@@ -9,10 +10,14 @@ class StreamPlayer extends Component {
         this.timeoutHandler = null;
 
         this.state = {
-            userId: props.match.params.userId,
+            user: {
+                id: props.match.params.userId
+            },
             stream: props.location.state.stream,
             player: {},
-            viewersCount: null
+            viewersCount: {
+                value: null
+            }
         };
 
         this.getStream(props.match.params.userId);
@@ -37,9 +42,10 @@ class StreamPlayer extends Component {
      * @param res
      */
     onGetStream = (res) => {
-        const width = document.getElementById('App-router-container').offsetWidth;
+        const width = document.getElementById('App-router-container').offsetWidth - 400;
 
         this.setState({
+            user: res.data.data[0],
             player: {
                 src: 'https://player.twitch.tv/?channel=' + res.data.data[0].login + '&allowfullscreen=true',
                 height: (0.5625 * width).toFixed(0),
@@ -56,7 +62,7 @@ class StreamPlayer extends Component {
      */
     getViewersCount = () => {
         TwitchAPI.get('/streams', { params: {
-            user_id: this.state.userId
+            user_id: this.state.user.id
         }})
             .then(this.onGetViewersCount)
             .catch(this.props.onError);
@@ -69,30 +75,46 @@ class StreamPlayer extends Component {
      */
     onGetViewersCount = (res) => {
         this.setState({
-            stream: {
-                viewersCount: {
-                    value: res.data.data[0].viewer_count
-                }
+            viewersCount: {
+                value: res.data.data[0].viewer_count
             }
         });
 
-        this.timeoutHandler = setTimeout(this.getViewersCount, 10000);    //TODO - set a timeout handler?
+        this.timeoutHandler = setTimeout(this.getViewersCount, 10000);
     };
 
     render () {
+        console.log(this.state);
         return (
-            <div>
-                <iframe
-                    title={this.state.stream.title}
-                    src={this.state.player.src}
-                    height={this.state.player.height}
-                    width={this.state.player.width}
-                    frameBorder='0'
-                    scrolling='no'
-                    allowFullScreen={this.state.player.allowFullScreen}>
-                </iframe>
+            <div className='StreamPlayer-container'>
+                <div className='StreamPlayer-title'>{this.state.stream.title}</div>
 
-                {this.state.stream.viewersCount.value}
+                <div className='StreamPlayer-stream-and-thumbnails-container'>
+                    <div className='StreamPlayer-stream'>
+                        <iframe
+                            title={this.state.stream.title}
+                            src={this.state.player.src}
+                            height={this.state.player.height}
+                            width={this.state.player.width}
+                            frameBorder='0'
+                            scrolling='no'
+                            allowFullScreen={this.state.player.allowFullScreen}>
+                        </iframe>
+
+                        <StreamThumbnailDetails
+                            text={this.state.user.description}
+                            textClassName={'StreamThumbnailDetails-description'}
+                            user={this.state.user !== null && this.state.user !== undefined ? this.state.user.display_name : 'NA'}
+                            game={this.state.stream.game.length > 0 ? this.state.stream.game[0].name : 'NA'}
+                            viewersCount={this.state.viewersCount.value || 'NA'}
+                            startedAt={this.state.stream.startedAt}
+                        />
+                    </div>
+
+                    <div className='StreamPlayer-thumbnails'>
+
+                    </div>
+                </div>
             </div>
         );
     }

@@ -1,0 +1,25 @@
+.StreamThumbnailDetails-title {
+  font-weight: bold; }
+
+.StreamThumbnailDetails-description, .StreamThumbnailDetails-title {
+  margin: 0.4em 0 0.6em 0;
+  color: #222222; }
+
+.StreamThumbnailDetails-container {
+  font-size: 0.9em;
+  font-weight: lighter;
+  color: #666666; }
+
+.StreamThumbnailDetails-detail {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; }
+
+.StreamThumbnailDetails-detail-item {
+  min-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; }
+
+.StreamThumbnailDetails-detail-item:last-of-type {
+  text-align: right; }

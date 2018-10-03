@@ -1,33 +1,33 @@
-.StreamThumbnail-container {
-  margin: 1em;
-  width: 300px;
-}
+.StreamThumbnailDetails-title {
+  @extend .StreamThumbnailDetails-description;
 
-.StreamThumbnail-title {
-  margin: 0.4em 0 0.6em 0;
-  color: #222222;
   font-weight: bold;
 }
 
-.StreamThumbnail-details {
+.StreamThumbnailDetails-description {
+  margin: 0.4em 0 0.6em 0;
+  color: #222222;
+}
+
+.StreamThumbnailDetails-container {
   font-size: 0.9em;
   font-weight: lighter;
   color: #666666;
 }
 
-.StreamThumbnail-detail {
+.StreamThumbnailDetails-detail {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 }
 
-.StreamThumbnail-detail-item {
+.StreamThumbnailDetails-detail-item {
   min-width: 50%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.StreamThumbnail-detail-item:last-of-type {
+.StreamThumbnailDetails-detail-item:last-of-type {
   text-align: right;
 }

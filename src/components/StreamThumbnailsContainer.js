@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './StreamThumbnailsContainer.css';
-import StreamThumbnail from './StreamThumbnail';
+import StreamThumbnailVertical from './StreamThumbnailVertical';
 
 class StreamThumbnailsContainer extends Component {
-    renderStreamThumbnail(index, stream) {
+    renderStreamThumbnailVertical(index, stream) {
         return (
-            <StreamThumbnail
+            <StreamThumbnailVertical
                 key={'stream_thumbnail_' + index}
                 stream={stream}
             />
@@ -14,7 +14,7 @@ class StreamThumbnailsContainer extends Component {
 
     render() {
         const thumbnails = this.props.streams.map((stream, index) => {
-            return this.renderStreamThumbnail(index, stream);
+            return this.renderStreamThumbnailVertical(index, stream);
         });
 
         return (
