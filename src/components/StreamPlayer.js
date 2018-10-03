@@ -83,6 +83,23 @@ class StreamPlayer extends Component {
         this.timeoutHandler = setTimeout(this.getViewersCount, 10000);
     };
 
+    /**
+     * On resize update the player's size
+     */
+    onResize = () => {
+        const containerWidth = document.getElementById('App-router-container').offsetWidth;
+        const width = containerWidth - 400 < 400 ? containerWidth : containerWidth - 400;
+
+        this.setState({
+            player: {
+                src: this.state.player.src,
+                height: (0.5625 * width).toFixed(0),
+                width: width,
+                allowFullScreen: this.state.player.allowFullScreen
+            }
+        });
+    };
+
     render () {
         return (
             <div className='StreamPlayer-container'>
@@ -116,6 +133,10 @@ class StreamPlayer extends Component {
                 </div>
             </div>
         );
+    }
+
+    componentDidMount() {
+        window.addEventListener("resize", this.onResize);
     }
 
     componentWillUnmount() {
