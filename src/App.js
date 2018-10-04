@@ -17,6 +17,7 @@ class App extends Component {
         let initialValues = App.loadInitialValues();
 
         this.state = {
+            loading: true,
             getStreamsParams: {
                 params: {
                     first: initialValues.numberOfResults,
@@ -94,6 +95,7 @@ class App extends Component {
      */
     onGetStreams = (streams) => {
         this.setState({
+            loading: false,
             streams: streams,
             bodyTitle: {
                 value: (this.searchText !== null && this.searchText.length > 0) ? 'Results' : 'Popular'
@@ -113,6 +115,13 @@ class App extends Component {
 
         if (window.location.pathname === '/') {
             clearTimeout(this.handleSearchTimeoutHandler);
+            this.setState({
+                loading: true,
+                streams: [],
+                bodyTitle: {
+                    value: (this.searchText !== null && this.searchText.length > 0) ? 'Results' : 'Popular'
+                }
+            });
             this.handleSearchTimeoutHandler = setTimeout(this.delayedSearch.bind(this), 1000);
         }
     };
@@ -189,6 +198,7 @@ class App extends Component {
                                 <Route
                                     exact path='/'
                                     render={() => <VerticalStreamThumbnailsContainer
+                                        loading={this.state.loading}
                                         streams={this.state.streams}
                                         bodyTitle={this.state.bodyTitle.value}
                                     />}

@@ -3,6 +3,10 @@
   font-weight: bolder;
   text-transform: uppercase; }
 
+.VerticalStreamThumbnailsContainer-loading {
+  margin: 2em;
+  text-align: center; }
+
 .VerticalStreamThumbnailsContainer-container {
   display: flex;
   flex-direction: row;
