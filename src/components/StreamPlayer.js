@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TwitchAPI from '../services/TwitchAPI';
 import { StreamsProvider } from '../services/StreamsProvider';
 import StreamThumbnailDetails from "./StreamThumbnailDetails";
+import HorizontalStreamThumbnailsContainer from "./HorizontalStreamThumbnailsContainer";
 import './StreamPlayer.css';
 
 class StreamPlayer extends Component {
@@ -89,15 +90,25 @@ class StreamPlayer extends Component {
         this.timeoutHandler = setTimeout(this.getViewersCount, 10000);
     };
 
+    /**
+     * Gets more streams from the same game being viewed
+     *
+     * @param params
+     */
     getGameStreams = (params) => {
         StreamsProvider.getEnrichedStreams(params)
             .then(this.onGetGameStreams)
             .catch(this.props.onError);
     };
 
+    /**
+     * Updates this.state with the incoming streams
+     *
+     * @param streams
+     */
     onGetGameStreams = (streams) => {
         this.setState({
-            gameStreams: streams
+            gameStreams: streams.filter((stream) => stream.user[0].id !== this.state.stream.user[0].id)
         });
     };
 
@@ -121,34 +132,33 @@ class StreamPlayer extends Component {
     render () {
         return (
             <div className='StreamPlayer-container'>
-                <div className='StreamPlayer-title'>{this.state.stream.title}</div>
+                <div className='StreamPlayer-stream-container'>
+                    <div className='StreamPlayer-title'>{this.state.stream.title}</div>
 
-                <div className='StreamPlayer-stream-and-thumbnails-container'>
-                    <div className='StreamPlayer-stream'>
-                        <iframe
-                            title={this.state.stream.title}
-                            src={this.state.player.src}
-                            height={this.state.player.height}
-                            width={this.state.player.width}
-                            frameBorder='0'
-                            scrolling='no'
-                            allowFullScreen={this.state.player.allowFullScreen}>
-                        </iframe>
+                    <iframe
+                        title={this.state.stream.title}
+                        src={this.state.player.src}
+                        height={this.state.player.height}
+                        width={this.state.player.width}
+                        frameBorder='0'
+                        scrolling='no'
+                        allowFullScreen={this.state.player.allowFullScreen}>
+                    </iframe>
 
-                        <StreamThumbnailDetails
-                            text={this.state.user.description}
-                            textClassName={'StreamThumbnailDetails-description'}
-                            user={this.state.user !== null && this.state.user !== undefined ? this.state.user.display_name : 'NA'}
-                            game={this.state.stream.game.length > 0 ? this.state.stream.game[0].name : 'NA'}
-                            viewersCount={this.state.viewersCount.value || 'NA'}
-                            startedAt={this.state.stream.startedAt}
-                        />
-                    </div>
-
-                    <div className='StreamPlayer-thumbnails'>
-
-                    </div>
+                    <StreamThumbnailDetails
+                        text={this.state.user.description}
+                        textClassName={'StreamThumbnailDetails-description'}
+                        user={this.state.user !== null && this.state.user !== undefined ? this.state.user.display_name : 'NA'}
+                        game={this.state.stream.game.length > 0 ? this.state.stream.game[0].name : 'NA'}
+                        viewersCount={this.state.viewersCount.value || 'NA'}
+                        startedAt={this.state.stream.startedAt}
+                    />
                 </div>
+
+                <HorizontalStreamThumbnailsContainer
+                    streams={this.state.gameStreams}
+                    bodyTitle={this.state.stream.game.length > 0 ? 'More like ' + this.state.stream.game[0].name : ''}
+                />
             </div>
         );
     }

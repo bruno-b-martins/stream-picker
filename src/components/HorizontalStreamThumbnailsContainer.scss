@@ -1,0 +1,15 @@
+.HorizontalStreamThumbnailsContainer-container {
+  max-width: 400px;
+  box-sizing: border-box;
+  padding-left: 1em;
+}
+
+.HorizontalStreamThumbnailsContainer-title {
+  padding: 1em 0;
+  font-weight: bolder;
+}
+
+.HorizontalStreamThumbnailsContainer-thumbnails {
+  display: flex;
+  flex-direction: column;
+}

@@ -1,11 +1,15 @@
+.StreamPlayer-container {
+  display: flex;
+  flex-direction: row; }
+
+.StreamPlayer-stream-container {
+  display: flex;
+  flex-direction: column; }
+
 .StreamPlayer-title {
   padding: 1em 0;
   font-weight: bolder;
   text-transform: uppercase; }
-
-.StreamPlayer-stream-and-thumbnails-container {
-  display: flex;
-  flex-direction: row; }
 
 .StreamPlayer-stream {
   display: flex;
