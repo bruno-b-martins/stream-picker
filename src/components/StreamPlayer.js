@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TwitchAPI from '../services/TwitchAPI';
 import { StreamsProvider } from '../services/StreamsProvider';
-import StreamThumbnailDetails from "./StreamThumbnailDetails";
+import VerticalStreamThumbnailDetails from "./VerticalStreamThumbnailDetails";
 import HorizontalStreamThumbnailsContainer from "./HorizontalStreamThumbnailsContainer";
 import './StreamPlayer.css';
 
@@ -145,9 +145,9 @@ class StreamPlayer extends Component {
                         allowFullScreen={this.state.player.allowFullScreen}>
                     </iframe>
 
-                    <StreamThumbnailDetails
+                    <VerticalStreamThumbnailDetails
                         text={this.state.user.description}
-                        textClassName={'StreamThumbnailDetails-description'}
+                        textClassName={'VerticalStreamThumbnailDetails-description'}
                         user={this.state.user !== null && this.state.user !== undefined ? this.state.user.display_name : 'NA'}
                         game={this.state.stream.game.length > 0 ? this.state.stream.game[0].name : 'NA'}
                         viewersCount={this.state.viewersCount.value || 'NA'}
