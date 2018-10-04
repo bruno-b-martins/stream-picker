@@ -8,11 +8,11 @@ function HorizontalStreamThumbnailDetails(props) {
         <div className='HorizontalStreamThumbnailDetails-container'>
             <div className='HorizontalStreamThumbnailDetails-title'>{props.text}</div>
 
-            <div>
+            <div className='HorizontalStreamThumbnailDetails-detail'>
                 <FontAwesomeIcon icon="user"/> {props.user}
             </div>
 
-            <div>
+            <div className='HorizontalStreamThumbnailDetails-detail'>
                 <FontAwesomeIcon icon='eye'/> {props.viewersCount}
             </div>
 

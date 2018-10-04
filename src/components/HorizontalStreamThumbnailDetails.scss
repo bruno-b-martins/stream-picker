@@ -6,8 +6,15 @@
   color: #666666;
 }
 
+.HorizontalStreamThumbnailDetails-detail {
+  margin: 0.2em 0;
+}
+
 .HorizontalStreamThumbnailDetails-title {
-  margin: 0.4em 0 0.6em 0;
+  margin-bottom: calc(0.2em + 4px);
   color: #222222;
   font-weight: bold;
+  height: calc(100% - 4em - 4px);
+  text-overflow: ellipsis;
+  overflow-y: hidden;
 }
