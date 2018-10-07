@@ -3,6 +3,8 @@ import { ScaleLoader } from "react-spinners";
 import './VerticalStreamThumbnailsContainer.css';
 import VerticalStreamThumbnail from './VerticalStreamThumbnail';
 
+let firstLoad = true;
+
 class VerticalStreamThumbnailsContainer extends Component {
     renderVerticalStreamThumbnail(index, stream) {
         return (
@@ -40,7 +42,10 @@ class VerticalStreamThumbnailsContainer extends Component {
     }
 
     componentDidMount() {
-        this.props.onSearch({ target: { value: document.getElementsByClassName('SearchBar-input')[0].value }});
+        if (!firstLoad) {
+            this.props.onSearch({ target: { value: document.getElementsByClassName('SearchBar-input')[0].value }});
+        }
+        firstLoad = false;
     }
 }
 
