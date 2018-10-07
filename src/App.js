@@ -49,6 +49,7 @@ class App extends Component {
      */
     handleSearchTimeoutHandler = null;
     searchText = null;
+    searchStreams = [];
 
     /**
      * Returns the initial values loaded from localStorage or their default values
@@ -83,9 +84,15 @@ class App extends Component {
      * @param params
      */
     getStreams(params) {
-        StreamsProvider.getEnrichedStreams(params)
-            .then(this.onGetStreams)
-            .catch(App.handleError);
+        const matchingStream = this.searchStreams.filter((stream) => stream.user[0] && stream.user[0].login === params.params.user_login);
+
+        if (matchingStream.length) {
+            this.onGetStreams(matchingStream);
+        } else {
+            StreamsProvider.getEnrichedStreams(params)
+                .then(this.onGetStreams)
+                .catch(App.handleError);
+        }
     }
 
     /**
@@ -94,6 +101,8 @@ class App extends Component {
      * @param streams
      */
     onGetStreams = (streams) => {
+        this.searchStreams = this.searchStreams.concat(streams);
+
         this.setState({
             loading: false,
             streams: streams,
