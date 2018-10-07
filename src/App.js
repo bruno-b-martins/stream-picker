@@ -10,6 +10,7 @@ import SearchOptions from './components/SearchOptions';
 import VerticalStreamThumbnailsContainer from './components/VerticalStreamThumbnailsContainer';
 import StreamPlayer from './components/StreamPlayer';
 
+
 class App extends Component {
     constructor(props) {
         super(props);
@@ -24,6 +25,7 @@ class App extends Component {
                     user_login: null
                 }
             },
+            searchSuggestions: [],
             searchOptions: {
                 numberOfResults: {
                     value: { value: initialValues.numberOfResults, label: initialValues.numberOfResults },
@@ -75,7 +77,6 @@ class App extends Component {
      */
     static handleError(err) {
         toast.error("Ups! Something went wrong");
-        console.error(err);
     }
 
     /**
@@ -96,12 +97,22 @@ class App extends Component {
     }
 
     /**
-     * Updates this.state with the incoming stream, users and games results
+     * Updates this.searchStreams and this.state with the incoming stream, users and games results
      *
      * @param streams
      */
     onGetStreams = (streams) => {
-        this.searchStreams = this.searchStreams.concat(streams);
+        streams.forEach((stream) => {
+            if (stream.user[0] && stream.user[0].login) {
+                if (
+                    this.searchStreams.every((searchStream) =>
+                        !(searchStream.user[0] && searchStream.user[0].login === stream.user[0].login)
+                    )
+                ) {
+                    this.searchStreams.push(stream);
+                }
+            }
+        });
 
         this.setState({
             loading: false,
@@ -126,12 +137,18 @@ class App extends Component {
             clearTimeout(this.handleSearchTimeoutHandler);
             this.setState({
                 loading: true,
+                searchSuggestions: (this.searchText !== null && this.searchText.length > 0) ?
+                    this.searchStreams.filter((stream) =>
+                        stream.user[0] &&
+                        stream.user[0].login.includes(this.searchText) &&
+                        stream.user[0].login !== this.searchText
+                    ) : [],
                 streams: [],
                 bodyTitle: {
                     value: (this.searchText !== null && this.searchText.length > 0) ? 'Results' : 'Popular'
                 }
             });
-            this.handleSearchTimeoutHandler = setTimeout(this.delayedSearch.bind(this), 1000);
+            this.handleSearchTimeoutHandler = setTimeout(this.delayedSearch.bind(this), 2000);
         }
     };
 
@@ -196,6 +213,7 @@ class App extends Component {
                         <SearchBar
                             onChange={this.handleSearch}
                             onSearch={() => this.getStreams(this.state.getStreamsParams)}
+                            suggestions={this.state.searchSuggestions}
                         />
                         <SearchOptions
                             options={this.state.searchOptions}
@@ -210,6 +228,7 @@ class App extends Component {
                                         loading={this.state.loading}
                                         streams={this.state.streams}
                                         bodyTitle={this.state.bodyTitle.value}
+                                        onSearch={this.handleSearch}
                                     />}
                                 />
                                 <Route

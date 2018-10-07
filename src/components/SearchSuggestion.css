@@ -1,0 +1,8 @@
+.SearchSuggestion-container {
+  padding: 0.2em;
+  background-color: #FFFFFF;
+  color: #222222; }
+
+.SearchSuggestion-container:hover {
+  background-color: #BBBBBB;
+  cursor: pointer; }

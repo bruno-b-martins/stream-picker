@@ -38,6 +38,10 @@ class VerticalStreamThumbnailsContainer extends Component {
             </div>
         );
     }
+
+    componentDidMount() {
+        this.props.onSearch({ target: { value: document.getElementsByClassName('SearchBar-input')[0].value }});
+    }
 }
 
 export default VerticalStreamThumbnailsContainer;

@@ -20,3 +20,10 @@
 
 .SearchBar-input:focus {
   outline: none; }
+
+.SearchBar-suggestions-container {
+  position: absolute;
+  top: calc(1rem + 2em);
+  left: calc(6rem + 2em + 2px);
+  right: calc(6rem + 2em);
+  z-index: 10; }

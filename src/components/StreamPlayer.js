@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import TwitchAPI from '../services/TwitchAPI';
 import { StreamsProvider } from '../services/StreamsProvider';
-import VerticalStreamThumbnailDetails from "./VerticalStreamThumbnailDetails";
-import HorizontalStreamThumbnailsContainer from "./HorizontalStreamThumbnailsContainer";
+import VerticalStreamThumbnailDetails from './VerticalStreamThumbnailDetails';
+import HorizontalStreamThumbnailsContainer from './HorizontalStreamThumbnailsContainer';
 import './StreamPlayer.css';
 
 class StreamPlayer extends Component {
@@ -50,7 +50,6 @@ class StreamPlayer extends Component {
      */
     onGetStream = (res) => {
         const width = getPlayerWidth();
-        console.log('onGetStream', width);
 
         this.setState({
             user: res.data.data[0],
@@ -164,17 +163,18 @@ class StreamPlayer extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("resize", this.onResize);
+        window.addEventListener('resize', this.onResize);
+        document.getElementsByClassName('SearchBar-input')[0].value = '';
     }
 
     componentWillUnmount() {
         clearTimeout(this.timeoutHandler);
+        window.removeEventListener('resize', this.onResize)
     }
 }
 
 function getPlayerWidth() {
     const containerWidth = document.getElementById('App-router-container').offsetWidth;
-    console.log('containerWidth', containerWidth);
     return containerWidth - 400 < 400 ? containerWidth : containerWidth - 400;
 }
 
