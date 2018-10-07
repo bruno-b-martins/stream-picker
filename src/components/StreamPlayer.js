@@ -49,7 +49,8 @@ class StreamPlayer extends Component {
      * @param res
      */
     onGetStream = (res) => {
-        const width = document.getElementById('App-router-container').offsetWidth - 400;
+        const width = getPlayerWidth();
+        console.log('onGetStream', width);
 
         this.setState({
             user: res.data.data[0],
@@ -116,8 +117,7 @@ class StreamPlayer extends Component {
      * On resize update the stream player's size
      */
     onResize = () => {
-        const containerWidth = document.getElementById('App-router-container').offsetWidth;
-        const width = containerWidth - 400 < 400 ? containerWidth : containerWidth - 400;
+        const width = getPlayerWidth();
 
         this.setState({
             player: {
@@ -170,6 +170,12 @@ class StreamPlayer extends Component {
     componentWillUnmount() {
         clearTimeout(this.timeoutHandler);
     }
+}
+
+function getPlayerWidth() {
+    const containerWidth = document.getElementById('App-router-container').offsetWidth;
+    console.log('containerWidth', containerWidth);
+    return containerWidth - 400 < 400 ? containerWidth : containerWidth - 400;
 }
 
 export default StreamPlayer;

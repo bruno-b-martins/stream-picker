@@ -2,6 +2,10 @@
   display: flex;
   flex-direction: row; }
 
+@media screen and (max-width: calc(800px + 12rem)) {
+  .StreamPlayer-container {
+    flex-direction: column; } }
+
 .StreamPlayer-stream-container {
   display: flex;
   flex-direction: column; }
@@ -10,11 +14,6 @@
   padding: 1em 0;
   font-weight: bolder;
   text-transform: uppercase; }
-
-.StreamPlayer-stream {
-  display: flex;
-  flex-direction: column;
-  max-width: calc(100% - 400px); }
 
 .StreamPlayer-thumbnails {
   width: 400px; }

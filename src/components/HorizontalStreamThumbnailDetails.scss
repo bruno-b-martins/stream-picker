@@ -8,13 +8,24 @@
 
 .HorizontalStreamThumbnailDetails-detail {
   margin: 0.2em 0;
+  max-width: calc(200px - 0.5em);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .HorizontalStreamThumbnailDetails-title {
-  margin-bottom: calc(0.2em + 4px);
+  margin-bottom: 0.2em;
   color: #222222;
   font-weight: bold;
+  max-width: 100%;
   height: calc(100% - 4em - 4px);
   text-overflow: ellipsis;
   overflow-y: hidden;
+}
+
+@media screen and (max-width: calc(800px + 12rem)) {
+  .HorizontalStreamThumbnailDetails-detail {
+    max-width: 100%;
+  }
 }
